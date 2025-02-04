@@ -22,9 +22,9 @@ jobs:
 
       - name: Set up Trivy
         run: |
-          sudo apt-get install jq -y
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-          trivy --version
+          sudo apt-get update
+          sudo apt-get install -y curl
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.57.0
 
       - name: Run Trivy Image Scan (Public Image)
         run: |
