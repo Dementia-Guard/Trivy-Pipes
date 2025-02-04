@@ -1,0 +1,36 @@
+name: Trivy Security Scan
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  security-events: write
+
+jobs:
+  trivy_scan:
+    name: Scan Public Image for Vulnerabilities
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Trivy
+        run: |
+          sudo apt-get install jq -y
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+          trivy --version
+
+      - name: Run Trivy Image Scan (Public Image)
+        run: |
+          trivy image --format sarif -o trivy-results.sarif alpine:latest
+
+      - name: Upload SARIF Report to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-results.sarif
