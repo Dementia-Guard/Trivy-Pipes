@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Trivy Image Scan (Public Image)
         run: |
-          trivy image --format sarif -o trivy-results.sarif alpine:latest
+          trivy image --format sarif -o trivy-results.sarif vulhub/node:12
 
       - name: Upload SARIF Report to GitHub
         uses: github/codeql-action/upload-sarif@v3
